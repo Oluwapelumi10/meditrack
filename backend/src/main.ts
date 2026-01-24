@@ -1,5 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -14,6 +17,13 @@ async function bootstrap() {
             transform: true,
         }),
     );
+
+    app.useGlobalInterceptors(
+        new LoggingInterceptor(),
+        new ResponseInterceptor(),
+    );
+
+    app.useGlobalFilters(new HttpExceptionFilter());
 
     await app.listen(3000);
 }
