@@ -4,9 +4,10 @@ import { PingDto } from './dto/ping.dto';
 @Controller('ping')
 export class PingController {
     @Post()
-    ping(@Body() body: PingDto) {
+    ping(@Body() dto: PingDto) {
         return {
-            reply: `pong: ${body.message}`,
+            status: 'ok',
+            echo: dto.message,
         };
     }
 }
