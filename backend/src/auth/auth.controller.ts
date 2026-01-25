@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req } from '@nestjs/common';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-    @Get('ping')
-    ping() {
+
+    @Get('protected')
+    @UseGuards(JwtAuthGuard)
+    protectedRoute(@Req() req: any) {
         return {
-            status: 'ok',
-            service: 'auth',
+            message: 'You are authenticated',
+            user: req.user,
         };
     }
 }
